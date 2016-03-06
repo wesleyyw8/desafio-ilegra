@@ -95,11 +95,13 @@ def insertInto(tableName, lineArr)
 end
 
 listener = Listen.to('/home/wesleylinux/data/in',  only: /\.dat$/) do |modified, added, removed|
-  if modified.size > 0 or added.size > 0 or removed.size > 0  	
-  	$client.query("CALL deleteAllData()")
-  	puts("------------------------- ANALYSIS -------------------")
-    processFiles modified
-  end
+  	if modified.size > 0 or added.size > 0 or removed.size > 0 or added.size > 1 	
+	  	$client.query("CALL deleteAllData()")
+	  	puts("------------------------- ANALYSIS -------------------")
+	  	
+	  	files = Dir["/home/wesleylinux/data/in/*.dat"]
+	    processFiles files
+  	end
 end
 listener.start
 sleep
